@@ -2,11 +2,21 @@ import cv2
 import os
 #import tensorflow as tf
 #import argparse
-
+from flask import Flask, redirect, url_for, render_template, Response
 from pycoral.adapters.common import input_size
 from pycoral.adapters.detect import get_objectsfrom pycoral.utils.dataset import read_label_file
 from pycoral.utils.edgetpu import make_interpreter
 from pycoral.utils.edgetpu import run_inference
+
+app = Flask(__name__)
+
+@app.route('/')
+def index(): 
+    return render_template('index.html')
+
+@app.route('/video_feed')
+def camera1_feed(): 
+    return Response(main(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 def main():
 
@@ -147,3 +157,4 @@ def changeToState4():
 
 if __name__ == '__main__':
     main()
+    #app.run(debug=True)
